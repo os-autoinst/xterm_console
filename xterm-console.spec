@@ -16,8 +16,6 @@
 #
 
 
-%define vttest_version 20120506
-%define splitbin 0%{?suse_version} >= 1300
 Name:           xterm-console
 Version:        1.0
 Release:        0
@@ -47,14 +45,8 @@ This package contains the basic X.Org terminal program.
 cp %{SOURCE1} .
 
 %build
-# suse 10.x uses older X11 directory structure
-%if 0%{?suse_version} < 1100
-%define xappdefs   %{_prefix}/X11R6/lib/X11/app-defaults
-%define xfontsd    %{_prefix}/X11R6/lib/X11/fonts
-%else
 %define xappdefs   %{_datadir}/X11/app-defaults
 %define xfontsd    %{_datadir}/fonts
-%endif
 
 if ! which bdftopcf &> /dev/null; then exit 1; fi
 
