@@ -1,7 +1,7 @@
 #
-# spec file for package xterm
+# spec file for package xterm-console
 #
-# Copyright (c) 2015-2020 SUSE LLC
+# Copyright (c) 2020 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -12,7 +12,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -24,29 +24,27 @@ Release:        0
 Summary:        A Linux vt console look-alike xterm wrapper
 License:        MIT
 Group:          System/X11/Utilities
-Url:            https://github.com/os-autoinst/xterm-console/tree/master
+URL:            https://github.com/os-autoinst/xterm-console
 Source:         xterm-console
 Source1:        psf2bdf.pl
-
-# svirt, eg. s390x, xen
-Supplements:    os-autoinst
-
+BuildRequires:  bdftopcf
+BuildRequires:  fontpackages-devel
 #BuildRequires: perl
 # the original consolefonts:
 BuildRequires:  kbd
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildRequires:  fontpackages-devel
-BuildRequires:  bdftopcf
-Requires: fonts-config
-%{reconfigure_fonts_prereq}
+Requires:       fonts-config
+# svirt, eg. s390x, xen
+Supplements:    os-autoinst
+%reconfigure_fonts_prereq
 
 %description
 This package contains the basic X.Org terminal program.
 
 %prep
 
-%setup -c -T
-cp %SOURCE1 .
+%setup -q -c -T
+cp %{SOURCE1} .
+
 %build
 # suse 10.x uses older X11 directory structure
 %if 0%{?suse_version} < 1100
@@ -57,11 +55,10 @@ cp %SOURCE1 .
 %define xfontsd    %{_datadir}/fonts
 %endif
 
-
 if ! which bdftopcf &> /dev/null; then exit 1; fi
 
 chmod +x ./psf2bdf.pl
-for font in /usr/share/kbd/consolefonts/*.psfu.gz
+for font in %{_datadir}/kbd/consolefonts/*.psfu.gz
 do
     fontname="${font##*/}"
     fontname="${fontname%.psfu.gz}"
@@ -75,16 +72,15 @@ done
 
 %install
 
-mkdir -p %{buildroot}%{_prefix}/bin
-install -m 755 %SOURCE0 %{buildroot}%{_prefix}/bin
+mkdir -p %{buildroot}%{_bindir}
+install -m 755 %{SOURCE0} %{buildroot}%{_bindir}
 
 mkdir -p %{buildroot}%{xfontsd}/misc/
 install -m 644 *.pcf.gz %{buildroot}%{xfontsd}/misc/
 
-%{reconfigure_fonts_scriptlets}
+%reconfigure_fonts_scriptlets
 
 %files
-%defattr(-,root,root)
 %{_bindir}/xterm-console
 %dir %{xfontsd}/misc
 %{xfontsd}/misc/*.pcf.gz
