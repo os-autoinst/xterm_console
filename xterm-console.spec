@@ -27,7 +27,6 @@ Source:         xterm-console
 Source1:        psf2bdf.pl
 BuildRequires:  bdftopcf
 BuildRequires:  fontpackages-devel
-#BuildRequires: perl
 # the original consolefonts:
 BuildRequires:  kbd
 Requires:       fonts-config
@@ -45,9 +44,8 @@ This package contains the basic X.Org terminal program.
 cp %{SOURCE1} .
 
 %build
-%define xfontsd    %{_datadir}/fonts
-which bdftopcf &> /dev/null || exit 1
 chmod +x ./psf2bdf.pl
+
 for font in %{_datadir}/kbd/consolefonts/*.psfu.gz; do
     fontname="${font##*/}"
     fontname="${fontname%.psfu.gz}"
@@ -60,16 +58,16 @@ done
 
 %install
 mkdir -p %{buildroot}%{_bindir}
-install -m 755 %{SOURCE0} %{buildroot}%{_bindir}
+mkdir -p %{buildroot}%{_datadir}/fonts/misc/
 
-mkdir -p %{buildroot}%{xfontsd}/misc/
-install -m 644 *.pcf.gz %{buildroot}%{xfontsd}/misc/
+install -m 0755 %{SOURCE0} %{buildroot}%{_bindir}
+install -m 0644 *.pcf.gz %{buildroot}%{_datadir}/fonts/misc/
 
 %reconfigure_fonts_scriptlets
 
 %files
 %{_bindir}/xterm-console
-%dir %{xfontsd}/misc
-%{xfontsd}/misc/*.pcf.gz
+%dir %{_datadir}/fonts/misc
+%{_datadir}/fonts/misc/*.pcf.gz
 
 %changelog
