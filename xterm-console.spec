@@ -36,6 +36,7 @@ Requires:       fonts-config
 # svirt, eg. s390x, xen
 Supplements:    os-autoinst
 %reconfigure_fonts_prereq
+BuildArch:      noarch
 
 %description
 This package contains the basic X.Org terminal program.
