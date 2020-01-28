@@ -45,26 +45,20 @@ This package contains the basic X.Org terminal program.
 cp %{SOURCE1} .
 
 %build
-%define xappdefs   %{_datadir}/X11/app-defaults
 %define xfontsd    %{_datadir}/fonts
-
-if ! which bdftopcf &> /dev/null; then exit 1; fi
-
+which bdftopcf &> /dev/null || exit 1
 chmod +x ./psf2bdf.pl
-for font in %{_datadir}/kbd/consolefonts/*.psfu.gz
-do
+for font in %{_datadir}/kbd/consolefonts/*.psfu.gz; do
     fontname="${font##*/}"
     fontname="${fontname%.psfu.gz}"
     gunzip -c $font | ./psf2bdf.pl | sed -e "s,FONT \+-psf-,FONT ${fontname}," > "$fontname".bdf
 done
 
-for i in *.bdf
-do
+for i in *.bdf; do
     bdftopcf "$i" | gzip -9 >"${i%.bdf}.pcf.gz"
 done
 
 %install
-
 mkdir -p %{buildroot}%{_bindir}
 install -m 755 %{SOURCE0} %{buildroot}%{_bindir}
 
