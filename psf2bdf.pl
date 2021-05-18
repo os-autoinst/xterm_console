@@ -69,6 +69,7 @@ for (@ARGV) {
                     $buf =~ m/\G([^\xfe\xff]*+)(?:\xfe[^\xfe\xff]++)*\xff/sg;
                     utf8::decode(my $str = $1);
                     $unicode[$i] = [map ord, split //, $str];
+                    $unilen += (scalar @{$unicode[$i]}) - 1;
                 }
             }
         }
