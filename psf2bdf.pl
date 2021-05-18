@@ -50,7 +50,7 @@ for (@ARGV) {
                         warn 'Unicode sequence ignored' if $u == 0xFFFE;
                     }
                     $unicode[$i] = [@u];
-                    $unilen += (scalar @u) - 1;
+                    $unilen += (scalar @u) - 1 if (scalar @u);
                 }
             }
         }
@@ -69,6 +69,7 @@ for (@ARGV) {
                     $buf =~ m/\G([^\xfe\xff]*+)(?:\xfe[^\xfe\xff]++)*\xff/sg;
                     utf8::decode(my $str = $1);
                     $unicode[$i] = [map ord, split //, $str];
+                    $unilen += (scalar @{$unicode[$i]}) - 1 if (scalar @{$unicode[$i]});
                 }
             }
         }
