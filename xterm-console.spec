@@ -17,7 +17,7 @@
 
 
 Name:           xterm-console
-Version:        1.0
+Version:        1.1
 Release:        0
 Summary:        A Linux vt console look-alike xterm wrapper
 License:        MIT
