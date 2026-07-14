@@ -30,6 +30,9 @@ BuildRequires:  fontpackages-devel
 # the original consolefonts:
 BuildRequires:  kbd
 Requires:       fonts-config
+Requires:       xorg-x11-fonts
+Requires:       xterm
+Requires:       mkfontscale
 # svirt, eg. s390x, xen
 Supplements:    os-autoinst
 %reconfigure_fonts_prereq
@@ -64,6 +67,11 @@ install -m 0755 %{SOURCE0} %{buildroot}%{_bindir}
 install -m 0644 *.pcf.gz %{buildroot}%{_datadir}/fonts/misc/
 
 %reconfigure_fonts_scriptlets
+
+%post
+# modern systems don't seem to do this automatically
+mkfontscale %{_datadir}/fonts/misc/
+mkfontdir %{_datadir}/fonts/misc/
 
 %files
 %{_bindir}/xterm-console
