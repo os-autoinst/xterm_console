@@ -66,12 +66,17 @@ mkdir -p %{buildroot}%{_datadir}/fonts/misc/
 install -m 0755 %{SOURCE0} %{buildroot}%{_bindir}
 install -m 0644 *.pcf.gz %{buildroot}%{_datadir}/fonts/misc/
 
-%reconfigure_fonts_scriptlets
-
 %post
+%reconfigure_fonts_post
 # modern systems don't seem to do this automatically
 mkfontscale %{_datadir}/fonts/misc/
 mkfontdir %{_datadir}/fonts/misc/
+
+%postun
+%reconfigure_fonts_postun
+
+%posttrans
+%reconfigure_fonts_posttrans
 
 %files
 %{_bindir}/xterm-console
