@@ -71,7 +71,7 @@ install -m 0644 *.pcf.gz %{buildroot}%{_datadir}/fonts/misc/
 %reconfigure_fonts_post
 # modern systems don't seem to do this automatically
 mkfontscale %{_datadir}/fonts/misc/
-mkfontdir %{_datadir}/fonts/misc/
+mkfontscale -b -s -l %{_datadir}/fonts/misc/
 
 %postun
 %reconfigure_fonts_postun
