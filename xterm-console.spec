@@ -33,6 +33,7 @@ Requires:       fonts-config
 Requires:       xorg-x11-fonts
 Requires:       xterm
 Requires:       mkfontscale
+Requires(post): mkfontscale
 # svirt, eg. s390x, xen
 Supplements:    os-autoinst
 %reconfigure_fonts_prereq
