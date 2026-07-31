@@ -32,6 +32,7 @@ BuildRequires:  kbd
 Requires:       fonts-config
 Requires:       xorg-x11-fonts
 Requires:       xterm
+Requires:       python3-base
 Requires:       mkfontscale
 Requires(post): mkfontscale
 # svirt, eg. s390x, xen
